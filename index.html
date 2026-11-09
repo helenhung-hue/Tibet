@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>冬遊西藏 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: phone-width column. Home = lapis sky header + tabs; each day opens as its own page (#day-N) with an illustrated hero and a timed timeline */
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --ink:#18202E; --muted:#5B6576; --line:#DCE1EA;
+  --lapis:#1E3D8C; --lapis-soft:#E3E9F7; --robe:#8E2B2B; --ochre:#B7791F; --ok:#2F7A4F; --warn:#B4541A;
+  --sky1:#1A2F6B; --sky2:#3D5FA8; --snow:#FFFFFF;
+  --display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D121C; --surface:#151C2A; --ink:#E8ECF3; --muted:#9AA4B6; --line:#263044;
+  --lapis:#8FAEF5; --lapis-soft:#1C2A4A; --robe:#E08A84; --ochre:#E0A84A; --ok:#6CC594; --warn:#F0955A;
+  --sky1:#0A1430; --sky2:#1E3466; --snow:#F1F4FA; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D121C; --surface:#151C2A; --ink:#E8ECF3; --muted:#9AA4B6; --line:#263044;
+  --lapis:#8FAEF5; --lapis-soft:#1C2A4A; --robe:#E08A84; --ochre:#E0A84A; --ok:#6CC594; --warn:#F0955A;
+  --sky1:#0A1430; --sky2:#1E3466; --snow:#F1F4FA; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+a{color:var(--lapis)}
+.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+/* Hero */
+.hero{background:linear-gradient(170deg,var(--sky1),var(--sky2));color:var(--snow);position:relative;overflow:hidden}
+.hero .wrap{padding-block:28px 22px;position:relative;z-index:1}
+.ridge{position:absolute;left:0;right:0;bottom:0;height:70px;width:100%;z-index:0}
+.ridge path{fill:var(--bg)}
+.eyebrow{font-size:12px;letter-spacing:.14em;opacity:.8}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(30px,8vw,44px);line-height:1.15;margin:6px 0 4px;text-wrap:balance}
+.sub{opacity:.85;font-size:14px;margin:0}
+.count{display:flex;gap:10px;margin:20px 0 6px;flex-wrap:wrap}
+.unit{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:8px 12px;min-width:68px;text-align:center}
+.unit b{display:block;font-family:var(--mono);font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.unit span{font-size:12px;opacity:.85}
+.count-note{font-size:13px;opacity:.85;margin:0 0 34px}
+/* Tabs */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto}
+.tab{appearance:none;border:0;background:none;color:var(--muted);font:500 15px var(--body);padding:12px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--lapis);border-bottom-color:var(--lapis)}
+.tab:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--lapis);outline-offset:2px}
+.home-main .wrap{padding-block:20px 48px;display:flex;flex-direction:column;gap:18px}
+h2{font-family:var(--display);font-weight:600;font-size:22px;margin:4px 0 0;text-wrap:balance}
+h3{font-size:16px;margin:0 0 6px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+/* Altitude */
+.alt svg{width:100%;height:auto;display:block}
+.alt .grid{stroke:var(--line);stroke-width:1}
+.alt .lab{fill:var(--muted);font:500 10px var(--mono)}
+.alt .sleep{fill:none;stroke:var(--lapis);stroke-width:2.5}
+.alt .sleepdot{fill:var(--lapis)}
+.alt .peak{fill:var(--robe)}
+.alt .stem{stroke:var(--robe);stroke-width:1.5;stroke-dasharray:2 3}
+.alt .plab{fill:var(--robe);font:500 10px var(--mono)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap;margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+/* Day list (home) */
+.daylist{display:flex;flex-direction:column;gap:10px}
+a.dayrow{display:grid;grid-template-columns:96px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 12px 8px 8px;text-decoration:none;color:var(--ink)}
+a.dayrow:hover{border-color:var(--lapis)}
+a.dayrow.today{border-color:var(--lapis);box-shadow:0 0 0 2px var(--lapis-soft)}
+a.dayrow.travel{background:transparent;border-style:dashed}
+.thumb{width:96px;aspect-ratio:16/10;border-radius:9px;overflow:hidden;max-width:100%}
+.thumb svg,.pic svg,.dayhero svg{display:block;width:100%;height:100%}
+.drow-t{min-width:0}
+.drow-t .dn{font:500 12px var(--mono);color:var(--lapis)}
+.drow-t b{display:block;font-size:15px;line-height:1.35}
+.drow-t span{font-size:12.5px;color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev{color:var(--muted);font-size:20px}
+.altpill{font:500 12px var(--mono);border-radius:999px;padding:3px 9px;white-space:nowrap;background:var(--lapis-soft);color:var(--lapis)}
+.altpill.hi{background:transparent;color:var(--robe);border:1px solid var(--robe)}
+.today-tag{font-size:11px;background:var(--lapis);color:var(--surface);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:2px}
+/* Day page */
+.daybar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.daybar .wrap{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-block:8px}
+.navbtn{display:inline-flex;align-items:center;gap:4px;text-decoration:none;color:var(--lapis);font-weight:500;font-size:14px;padding:6px 4px;white-space:nowrap}
+.navbtn[aria-disabled="true"]{visibility:hidden}
+.dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-width:0}
+.dots a{width:8px;height:8px;border-radius:50%;background:var(--line);display:block}
+.dots a.on{background:var(--lapis);width:20px;border-radius:5px}
+.daymain .wrap{padding-block:16px 56px;display:flex;flex-direction:column;gap:18px}
+.dayhero{border-radius:16px;overflow:hidden;aspect-ratio:16/9;max-width:100%;position:relative}
+.dayhero .cap{position:absolute;left:0;right:0;bottom:0;padding:28px 14px 10px;background:linear-gradient(transparent,rgba(5,10,25,.72));color:#fff}
+.dayhero .cap .dn{font:500 12px var(--mono);opacity:.9}
+.dayhero .cap h1{font-size:clamp(22px,6vw,32px);margin:2px 0 0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.fact span{display:block;font-size:12px;color:var(--muted)}
+.fact b{font-family:var(--mono);font-weight:500;font-size:16px;font-variant-numeric:tabular-nums}
+.fact b.robe{color:var(--robe)}
+.timeline{display:flex;flex-direction:column;position:relative}
+.ti{display:grid;grid-template-columns:58px 18px 1fr;gap:0 10px;position:relative}
+.ti .tm{font:500 14px var(--mono);color:var(--lapis);text-align:right;padding-top:1px;font-variant-numeric:tabular-nums}
+.ti .rail{position:relative}
+.ti .rail::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--line)}
+.ti:first-child .rail::before{top:8px}
+.ti:last-child .rail::before{bottom:auto;height:8px}
+.ti .rail i{position:absolute;left:3px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--lapis)}
+.ti.key .rail i{background:var(--lapis)}
+.ti .body{padding-bottom:18px;min-width:0}
+.ti .body b{display:block;font-size:15px}
+.ti .body p{margin:2px 0 0;font-size:14px;color:var(--muted)}
+.ti .pic{margin-top:10px;border-radius:12px;overflow:hidden;aspect-ratio:16/9;max-width:100%}
+.ti .altchip{font:500 11px var(--mono);color:var(--robe);margin-left:6px}
+.hotelcard{display:flex;flex-direction:column;gap:4px}
+.hotelcard .hn{font-weight:700;font-size:16px}
+.tiplist{margin:0;padding-left:18px}
+.tiplist li{margin:4px 0}
+.disclaim{font-size:12.5px;color:var(--muted)}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pager a{display:block;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-decoration:none;color:var(--ink);min-width:0}
+.pager a span{display:block;font-size:12px;color:var(--muted)}
+.pager a b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pager a.next{text-align:right;grid-column:2}
+/* Checklist */
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.progress div{height:100%;background:var(--ok);width:0;transition:width .3s}
+.group{display:flex;flex-direction:column;gap:2px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.check:last-child{border-bottom:0}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--ok);flex:none}
+.check label{flex:1;min-width:0;cursor:pointer}
+.check.done label{color:var(--muted);text-decoration:line-through}
+.due{font:500 11px var(--mono);color:var(--warn);white-space:nowrap;margin-top:4px}
+.check.done .due{color:var(--muted)}
+/* Expect / info */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.cards ul{margin:6px 0 0;padding-left:18px}
+.cards li{margin:3px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl{overflow-x:auto}
+.copy{appearance:none;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:4px 10px;font:500 13px var(--body);cursor:pointer}
+@media (max-width:420px){a.dayrow{grid-template-columns:76px 1fr auto}.thumb{width:76px}.ti{grid-template-columns:48px 18px 1fr;gap:0 8px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<!-- HOME -->
+<div id="home">
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">林芝 · 羊湖 · 日喀則 · 納木措 · 拉薩</div>
+    <h1>冬遊西藏 9 天</h1>
+    <p class="sub">2026年12月25日 – 2027年1月2日 · 4 人 · 7 座商務車</p>
+    <div class="count" id="count" aria-live="polite">
+      <div class="unit"><b id="cd-d">--</b><span>天</span></div>
+      <div class="unit"><b id="cd-h">--</b><span>小時</span></div>
+      <div class="unit"><b id="cd-m">--</b><span>分鐘</span></div>
+    </div>
+    <p class="count-note" id="count-note">距離降落林芝（CA4127 · 12/25 11:15）</p>
+  </div>
+  <svg class="ridge" viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70 L0 52 L40 38 L62 46 L98 20 L120 34 L150 26 L178 44 L210 14 L236 30 L262 24 L300 46 L332 30 L360 40 L400 28 L400 70 Z"/></svg>
+</header>
+
+<nav class="tabs" aria-label="分頁">
+  <div class="wrap" role="tablist">
+    <button class="tab" role="tab" id="t-plan" aria-selected="true" data-panel="plan">行程</button>
+    <button class="tab" role="tab" id="t-prep" aria-selected="false" data-panel="prep">準備清單</button>
+    <button class="tab" role="tab" id="t-expect" aria-selected="false" data-panel="expect">出發須知</button>
+    <button class="tab" role="tab" id="t-info" aria-selected="false" data-panel="info">費用與資料</button>
+  </div>
+</nav>
+
+<main class="home-main">
+  <section class="wrap" id="plan" role="tabpanel" aria-labelledby="t-plan">
+    <div class="panel alt">
+      <h3>海拔走勢</h3>
+      <svg id="altchart" viewBox="0 0 360 170" role="img" aria-label="每日住宿海拔與最高點"></svg>
+      <div class="legend"><span><i style="background:var(--lapis)"></i>住宿海拔</span><span><i style="background:var(--robe)"></i>當日最高點</span><span>約數，以司機確認為準</span></div>
+    </div>
+    <p class="small muted" style="margin:0">點選任何一天，打開當天的詳細行程和時間表。</p>
+    <div class="daylist" id="daylist"></div>
+  </section>
+
+  <section class="wrap" id="prep" role="tabpanel" aria-labelledby="t-prep" hidden>
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+        <h3 style="margin:0">完成進度</h3><span class="small muted" id="prog-txt">0 / 0</span>
+      </div>
+      <div class="progress" style="margin-top:8px"><div id="prog-bar"></div></div>
+      <p class="small muted" style="margin:8px 0 0">勾選只儲存在你這部裝置的瀏覽器。</p>
+    </div>
+    <div id="checklist" style="display:flex;flex-direction:column;gap:14px"></div>
+  </section>
+
+  <section class="wrap" id="expect" role="tabpanel" aria-labelledby="t-expect" hidden>
+    <h2>出發前要知道的事</h2>
+    <div class="cards">
+      <div class="panel">
+        <h3>高原反應</h3>
+        <ul>
+          <li>前三晚住 2,900–3,500m（索松村、林芝、結巴村），適應節奏很好。</li>
+          <li>D4 起住拉薩 3,650m、日喀則 3,840m。</li>
+          <li>D5 卡若拉冰川、D7 那根拉山口都超過 5,000m，只作短停。</li>
+          <li>車上有醫用鋼瓶氧氣，每人另有 1 瓶便攜氧氣。</li>
+          <li>頭兩天慢走、多喝水、不喝酒、避免長時間洗熱水澡。</li>
+          <li>劇烈頭痛、嘔吐、氣喘不止或神志不清：立即下撤並求醫。</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>天氣（12 月下旬約數）</h3>
+        <div class="tbl"><table>
+          <thead><tr><th>地點</th><th>日間</th><th>夜間</th></tr></thead>
+          <tbody>
+            <tr><td>林芝 / 索松村</td><td class="num">8–12°C</td><td class="num">-4–0°C</td></tr>
+            <tr><td>拉薩</td><td class="num">6–9°C</td><td class="num">-10–-6°C</td></tr>
+            <tr><td>日喀則</td><td class="num">4–7°C</td><td class="num">-14–-9°C</td></tr>
+            <tr><td>納木措 / 那根拉</td><td class="num">-8–-2°C</td><td class="num">-20°C 以下</td></tr>
+          </tbody>
+        </table></div>
+        <p class="small muted" style="margin:8px 0 0">冬季乾燥、晴天多、紫外線極強。日出約 08:30–09:00，日落約 18:45–19:05，比香港晚一個多小時。</p>
+      </div>
+      <div class="panel">
+        <h3>證件</h3>
+        <ul>
+          <li>香港居民持回鄉證入藏，不需要辦入藏函（入藏函只適用外國護照持有人）。</li>
+          <li>回鄉證有效期要覆蓋整個行程。</li>
+          <li>住酒店、景區、檢查站都要出示證件，隨身帶好。</li>
+          <li>行程是否有路段需要邊防證，請向司機再確認一次。</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>用車與路況</h3>
+        <ul>
+          <li>司機只負責開車，不陪同進入景區，也不作導遊講解。</li>
+          <li>冬季山口可能因下雪封路。合約寫明因天氣、政策、路況改行程，只退未產生的住宿費，車費不退。</li>
+          <li>每人限 26 寸行李箱一個（共 4 件）。</li>
+          <li>司機贈送無人機拍攝；禁飛區或天氣差時取消，不退費。</li>
+          <li>出發前一晚會開微信群聯絡。</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>保險（Generali 單次旅遊）</h3>
+        <ul>
+          <li>需要送院或撤離時，先致電緊急援助熱線，由保險公司安排；自行安排的撤離不保。</li>
+          <li>貴重物品隨身帶；留在車上（非上鎖車尾箱）的財物失竊不保。</li>
+          <li>遺失或被盜要在 24 小時內報警取證明。</li>
+          <li>旅伴在行程中途生病，你提早回程的損失不在保障內。</li>
+          <li>政府封路、封區屬不保事項。</li>
+        </ul>
+        <p class="small" style="margin:8px 0 0">緊急援助：<b style="font-family:var(--mono)" id="gen-tel">(852) 3187 6888</b> <button class="copy" data-copy="+85231876888" data-sel="gen-tel">複製</button></p>
+      </div>
+      <div class="panel">
+        <h3>寺廟禮儀</h3>
+        <ul>
+          <li>轉經、繞寺、轉佛塔都要順時針走。</li>
+          <li>很多殿內禁止拍照，留意告示。</li>
+          <li>拍攝僧人或藏民前先問一聲。</li>
+          <li>不要摸別人的頭，不要跨過經幡和瑪尼堆。</li>
+          <li>布達拉宮門票實名預約，入場要帶證件。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="info" role="tabpanel" aria-labelledby="t-info" hidden>
+    <h2>航班</h2>
+    <div class="panel tbl">
+      <table>
+        <thead><tr><th>日期</th><th>航班</th><th>時間</th></tr></thead>
+        <tbody>
+          <tr><td class="num">12/24</td><td><b>CA110</b> 香港 T1 → 北京首都 T3</td><td class="num">17:50 → 21:15</td></tr>
+          <tr><td class="num">12/25</td><td><b>CA4127</b> 北京首都 → 林芝米林</td><td class="num">07:05 → 11:15</td></tr>
+          <tr><td class="num">1/2</td><td><b>CA2764</b> 拉薩貢嘎 → 成都天府 T2</td><td class="num">10:55 → 13:10</td></tr>
+          <tr><td class="num">1/3</td><td><b>CA411</b> 成都天府 T1 → 香港 T1</td><td class="num">09:20 → 12:05</td></tr>
+        </tbody>
+      </table>
+      <p class="small muted" style="margin:8px 0 0">CA4127 時間已按國航 9 月 27 日的航班時刻變更通知更新。</p>
+    </div>
+    <h2>酒店</h2>
+    <div class="panel tbl">
+      <table>
+        <thead><tr><th>晚</th><th>酒店</th><th>備註</th></tr></thead>
+        <tbody>
+          <tr><td class="num">12/24</td><td>北京富永裕隆國際酒店<br><span class="small muted">Beijing Fuyong Yulong International Hotel</span></td><td>國航免費中轉住宿 · 首都機場附近</td></tr>
+          <tr><td class="num">12/25</td><td>季楓度假酒店（索松村）</td><td>景觀房</td></tr>
+          <tr><td class="num">12/26</td><td>林芝豪生酒店</td><td>四鑽</td></tr>
+          <tr><td class="num">12/27</td><td>巴松措湖畔風情客棧</td><td>結巴村</td></tr>
+          <tr><td class="num">12/28</td><td>拉薩布達拉宮蘇路亞朵</td><td>四星 · 供氧</td></tr>
+          <tr><td class="num">12/29</td><td>日喀則熙客富景酒店</td><td>四鑽 · 供氧</td></tr>
+          <tr><td class="num">12/30–1/1</td><td>拉薩布達拉宮蘇路亞朵</td><td>共 4 晚</td></tr>
+          <tr><td class="num">1/2</td><td>天府空港悅享酒店<br><span class="small muted">Joyhub Cheer Hotel</span></td><td>2 間高級雙床房 · 天府機場附近</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>費用</h2>
+    <div class="panel tbl">
+      <table>
+        <tbody>
+          <tr><td>團費</td><td class="num">CNY 6,080 × 4 人</td><td class="num"><b>CNY 24,320</b></td></tr>
+          <tr><td>已付訂金（9月17日）</td><td></td><td class="num">− CNY 8,000</td></tr>
+          <tr><td><b>餘款</b>（出發前一週付清）</td><td></td><td class="num"><b style="color:var(--warn)">CNY 16,320</b></td></tr>
+          <tr><td>每人尚需付</td><td></td><td class="num">CNY 4,080</td></tr>
+          <tr><td>成都酒店（Agoda，12/30 自動扣款）</td><td></td><td class="num">RMB 939.74</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cards">
+      <div class="panel">
+        <h3>團費已包含</h3>
+        <ul>
+          <li>D1–D7 七座商務車（油費、過路費、停車費）</li>
+          <li>8 晚酒店，兩人一房，含早餐</li>
+          <li>車內醫用氧氣、每人 1 瓶便攜氧氣、礦泉水</li>
+          <li>司機食宿補貼、接送機、保險</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>不包含（自備預算）</h3>
+        <ul>
+          <li>全程午餐和晚餐</li>
+          <li>全程景區門票及觀光車費用</li>
+          <li>導遊服務</li>
+          <li>D8 拉薩市內觀光自理</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- DAY PAGE -->
+<div id="dayview" hidden>
+  <div class="daybar"><div class="wrap">
+    <a class="navbtn" id="db-back" href="#">‹ 總覽</a>
+    <div class="dots" id="db-dots"></div>
+    <a class="navbtn" id="db-next" href="#">下一天 ›</a>
+  </div></div>
+  <main class="daymain"><div class="wrap" id="daybody"></div></main>
+</div>
+
+<script>
+/* ---------- Illustrated scenes (original, drawn in code) ---------- */
+let SID=0;
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const SKY={dawn:["#24325f","#6a5f8c","#f2a65e"],day:["#1f5fcf","#5d97e6","#bcd8f5"],dusk:["#1f2d5c","#a65b6b","#f4b56b"],night:["#050a1f","#101c46","#2a3a72"],gold:["#2a3c78","#8a7fb0","#f6c98a"]};
+function ridgePts(r,w,base,amp,n,sharp){const ph=[r()*6,r()*6,r()*6];let p=[];for(let i=0;i<=n;i++){const x=i/n;let v=0.55*Math.sin(x*6+ph[0])+0.3*Math.sin(x*13+ph[1])+0.15*Math.sin(x*29+ph[2]);v=(v+1)/2;if(sharp)v=Math.pow(v,1.6);p.push([x*w,base-amp*v])}return p}
+function poly(pts,w,h){return `M0 ${h} `+pts.map(p=>`L${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(" ")+` L${w} ${h} Z`}
+function scene(o){
+  const W=320,H=180,r=rng(o.seed||7),id="s"+(++SID),sk=SKY[o.sky||"day"];let s="";
+  s+=`<defs><linearGradient id="${id}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sk[0]}"/><stop offset=".6" stop-color="${sk[1]}"/><stop offset="1" stop-color="${sk[2]}"/></linearGradient>`;
+  s+=`<linearGradient id="${id}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${o.water==="turq"?"#3fb7c4":o.water==="deep"?"#1d4f9e":"#4f86c9"}"/><stop offset="1" stop-color="${o.water==="turq"?"#167f95":o.water==="deep"?"#0f2f6b":"#2b5c9c"}"/></linearGradient></defs>`;
+  s+=`<rect width="${W}" height="${H}" fill="url(#${id}g)"/>`;
+  if(o.sky==="night"){for(let i=0;i<60;i++)s+=`<circle cx="${(r()*W).toFixed(1)}" cy="${(r()*H*0.6).toFixed(1)}" r="${(r()*1.1+0.3).toFixed(2)}" fill="#fff" opacity="${(0.4+r()*0.6).toFixed(2)}"/>`;
+    if(o.milky)s+=`<path d="M40 0 C120 60 200 40 300 120" stroke="#c9d4ff" stroke-width="26" opacity=".08" fill="none"/>`;}
+  if(o.sun){const sy=o.sky==="day"?40:o.sky==="night"?30:H*0.5;s+=`<circle cx="${o.sunx||250}" cy="${sy}" r="${o.sky==="night"?9:14}" fill="${o.sky==="night"?"#f4f1e6":o.sky==="day"?"#fff6d8":"#ffd08a"}" opacity=".95"/>`;}
+  if(o.plane)s+=`<g transform="translate(${o.plane[0]},${o.plane[1]}) rotate(-12)" fill="#fff"><path d="M0 0 L46 0 Q54 0 54 3 Q54 6 46 6 L0 6 Z"/><path d="M18 3 L30 3 L22 -14 L17 -14 Z"/><path d="M18 3 L30 3 L22 20 L17 20 Z"/><path d="M2 3 L8 3 L4 -7 L1 -7 Z"/></g>`;
+  const snowCol=o.sky==="gold"||o.goldpeak?"#ffd59a":"#f7fbff";
+  // far range
+  if(o.range){const pts=ridgePts(r,W,o.rangeBase||110,o.rangeAmp||45,40,true);const d=poly(pts,W,H);
+    s+=`<clipPath id="${id}c"><path d="${d}"/></clipPath><path d="${d}" fill="${o.sky==="night"?"#2b3866":"#7b8fb8"}"/>`;
+    if(o.range==="snow")s+=`<rect x="0" y="0" width="${W}" height="${(o.rangeBase||110)-(o.rangeAmp||45)*0.45}" fill="${snowCol}" clip-path="url(#${id}c)" opacity=".95"/>`;}
+  // hero peak
+  if(o.peak){const px=o.peakx||200,top=o.peakTop||22,base=o.peakBase||128,hw=o.peakW||95;
+    const d=`M${px-hw} ${base} L${px-hw*0.35} ${top+38} L${px-hw*0.12} ${top+18} L${px} ${top} L${px+hw*0.18} ${top+22} L${px+hw*0.45} ${top+46} L${px+hw} ${base} Z`;
+    s+=`<clipPath id="${id}p"><path d="${d}"/></clipPath><path d="${d}" fill="${o.sky==="night"?"#33416f":"#8597bd"}"/>`;
+    s+=`<rect x="0" y="0" width="${W}" height="${top+58}" fill="${snowCol}" clip-path="url(#${id}p)"/>`;
+    s+=`<path d="M${px} ${top} L${px+hw*0.18} ${top+22} L${px+hw*0.45} ${top+46} L${px+hw} ${base} L${px+6} ${base} Z" fill="#000" opacity=".12"/>`;}
+  if(o.glacier){s+=`<path d="M150 70 C160 95 140 110 168 128 L196 128 C178 110 196 92 186 70 Z" fill="#dff3ff" opacity=".9"/><path d="M160 90 L180 92 M158 108 L184 110" stroke="#9fd2ee" stroke-width="2"/>`;}
+  // mid hills
+  if(o.hills!==false){const pts=ridgePts(r,W,o.hillBase||140,o.hillAmp||26,30,false);s+=`<path d="${poly(pts,W,H)}" fill="${o.hillCol||(o.sky==="night"?"#1a2448":"#4d6a5a")}"/>`;}
+  // water
+  if(o.water){const wy=o.waterY||132;s+=`<rect x="0" y="${wy}" width="${W}" height="${H-wy}" fill="url(#${id}w)"/>`;
+    for(let i=0;i<7;i++){const y=wy+6+r()*(H-wy-8),x=r()*W;s+=`<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${(20+r()*50).toFixed(0)}" height="1.5" fill="#fff" opacity=".35"/>`;}
+    if(o.island)s+=`<path d="M120 ${wy+14} Q150 ${wy-6} 180 ${wy+14} Z" fill="#3e5a46"/><rect x="146" y="${wy-2}" width="9" height="7" fill="#f5f0e6"/><rect x="146" y="${wy-4}" width="9" height="2" fill="#a8362e"/>`;}
+  if(o.river){s+=`<path d="M0 160 C70 140 110 172 170 150 S270 136 320 150 L320 168 C260 158 210 182 160 168 S60 160 0 178 Z" fill="#5d9fc0" opacity=".9"/>`;}
+  // foreground
+  if(o.fg==="dunes"){s+=`<path d="M0 150 C50 128 90 132 140 146 S240 120 320 140 L320 180 L0 180 Z" fill="#d8b47a"/><path d="M0 165 C70 150 130 160 190 170 S280 150 320 160 L320 180 L0 180 Z" fill="#c49a5c"/>`;}
+  if(o.fg==="forest"){for(let i=0;i<34;i++){const x=r()*W,b=H-r()*28,h=14+r()*18;s+=`<path d="M${x.toFixed(1)} ${(b-h).toFixed(1)} L${(x-5).toFixed(1)} ${b.toFixed(1)} L${(x+5).toFixed(1)} ${b.toFixed(1)} Z" fill="${r()>.5?"#1f3d2e":"#2c4f38"}"/>`}}
+  if(o.fg==="grass"){s+=`<path d="M0 158 C80 150 200 160 320 152 L320 180 L0 180 Z" fill="${o.sky==="night"?"#1d2638":"#b59b62"}"/>`;}
+  if(o.fg==="reeds"){s+=`<path d="M0 162 L320 162 L320 180 L0 180 Z" fill="#a98f5c"/>`;for(let i=0;i<70;i++){const x=r()*W;s+=`<path d="M${x.toFixed(1)} 180 L${(x+r()*4-2).toFixed(1)} ${(150+r()*12).toFixed(1)}" stroke="#8a6f3e" stroke-width="1.2"/>`}
+    for(let i=0;i<5;i++){const x=30+r()*260,y=40+r()*40;s+=`<path d="M${x} ${y} q5 -5 10 0 q5 -5 10 0" stroke="#203050" stroke-width="1.6" fill="none"/>`}}
+  if(o.flags){const y0=o.flags;const cols=["#2b62c8","#f5f5f5","#c8352e","#2f8a4d","#e8b92e"];s+=`<path d="M0 ${y0} Q160 ${y0+30} 320 ${y0-6}" stroke="#555" stroke-width="1" fill="none"/>`;
+    for(let i=0;i<28;i++){const t=i/27,x=t*320,y=(1-t)*(1-t)*y0+2*(1-t)*t*(y0+30)+t*t*(y0-6);s+=`<rect x="${(x-4).toFixed(1)}" y="${y.toFixed(1)}" width="8" height="10" fill="${cols[i%5]}" transform="rotate(${(r()*16-8).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`}}
+  // buildings
+  if(o.bld==="village"){for(let i=0;i<6;i++){const x=40+i*42+r()*10,h=14+r()*8,y=150-h;s+=`<rect x="${x}" y="${y}" width="26" height="${h}" fill="#f2ece0"/><rect x="${x-1}" y="${y-3}" width="28" height="3" fill="#7a3b2a"/><rect x="${x+6}" y="${y+5}" width="5" height="5" fill="#2a1f1a"/><rect x="${x+15}" y="${y+5}" width="5" height="5" fill="#2a1f1a"/>`;}}
+  if(o.bld==="monastery"){s+=`<path d="M0 180 L0 150 Q160 100 320 140 L320 180 Z" fill="#8a7a5c"/>`;
+    const blocks=[[30,120,40,30,"#f0e8d8"],[70,105,60,42,"#9b2d27"],[130,96,70,52,"#f0e8d8"],[200,108,50,38,"#9b2d27"],[250,122,44,28,"#f0e8d8"]];
+    blocks.forEach(b=>{s+=`<rect x="${b[0]}" y="${b[1]}" width="${b[2]}" height="${b[3]}" fill="${b[4]}"/><rect x="${b[0]}" y="${b[1]}" width="${b[2]}" height="4" fill="#5a1c18"/>`;
+      for(let k=0;k<Math.floor(b[2]/12);k++)s+=`<rect x="${b[0]+5+k*12}" y="${b[1]+10}" width="4" height="7" fill="#2a1f1a"/>`;});
+    s+=`<path d="M150 96 L165 82 L180 96 Z" fill="#e3b33c"/><path d="M90 105 L100 95 L110 105 Z" fill="#e3b33c"/>`;}
+  if(o.bld==="palace"){const lit=o.sky==="night";s+=`<path d="M0 180 L0 160 C60 150 90 128 160 122 C230 128 260 150 320 160 L320 180 Z" fill="${lit?"#2b2a3c":"#8d7d60"}"/>`;
+    s+=`<rect x="70" y="92" width="180" height="40" fill="${lit?"#f6e7c4":"#f4efe4"}"/><rect x="128" y="70" width="64" height="62" fill="${lit?"#c8584a":"#9e2f28"}"/><rect x="128" y="70" width="64" height="5" fill="#5a1c18"/><rect x="70" y="92" width="180" height="4" fill="#6b4a2a"/>`;
+    for(let k=0;k<14;k++)s+=`<rect x="${76+k*12.5}" y="104" width="4" height="6" fill="${lit?"#ffd27a":"#2a1f1a"}"/><rect x="${76+k*12.5}" y="117" width="4" height="6" fill="${lit?"#ffd27a":"#2a1f1a"}"/>`;
+    for(let k=0;k<5;k++)s+=`<rect x="${134+k*12}" y="82" width="4" height="7" fill="${lit?"#ffe1a0":"#2a1f1a"}"/>`;
+    s+=`<rect x="150" y="62" width="20" height="8" fill="#e3b33c"/>`;}
+  if(o.bld==="street"){const cols=["#f0e8d8","#e6dccb","#f3ecdf"];for(let i=0;i<7;i++){const x=i*48-6,h=46+r()*16;s+=`<rect x="${x}" y="${150-h}" width="46" height="${h}" fill="${cols[i%3]}"/><rect x="${x}" y="${150-h}" width="46" height="5" fill="#5a1c18"/><rect x="${x+8}" y="${150-h+14}" width="9" height="11" fill="#2a1f1a"/><rect x="${x+27}" y="${150-h+14}" width="9" height="11" fill="#2a1f1a"/><rect x="${x+6}" y="${150-h+12}" width="13" height="3" fill="#b8402f"/><rect x="${x+25}" y="${150-h+12}" width="13" height="3" fill="#b8402f"/>`;}
+    s+=`<rect x="0" y="150" width="${W}" height="30" fill="#9c9488"/>`;for(let i=0;i<9;i++){const x=10+r()*300;s+=`<rect x="${x}" y="142" width="5" height="12" rx="2" fill="${["#7a2b2b","#2b3f7a","#3a3a3a"][i%3]}"/><circle cx="${x+2.5}" cy="139" r="3" fill="#3a2a20"/>`}}
+  if(o.bld==="city"){for(let i=0;i<14;i++){const x=i*24,h=30+r()*60;s+=`<rect x="${x}" y="${H-h}" width="22" height="${h}" fill="#141c38"/>`;for(let k=0;k<8;k++)if(r()>.45)s+=`<rect x="${x+4+(k%2)*9}" y="${H-h+6+Math.floor(k/2)*10}" width="4" height="4" fill="#ffd27a" opacity=".85"/>`}}
+  if(o.bld==="runway"){s+=`<rect x="0" y="150" width="${W}" height="30" fill="#3b4250"/><path d="M0 165 L320 165" stroke="#f2f2f2" stroke-width="2" stroke-dasharray="14 10"/>`;}
+  if(o.road){s+=`<path d="M150 180 C170 160 140 150 175 132 S210 118 200 108" stroke="#6b6b6b" stroke-width="7" fill="none"/><path d="M150 180 C170 160 140 150 175 132 S210 118 200 108" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4 5" fill="none"/>`;}
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${o.label||"插圖"}">${s}</svg>`;
+}
+
+/* ---------- Trip data ---------- */
+const S={ // scene presets
+  airport:{sky:"dusk",bld:"city",hills:false,plane:[60,50],label:"機場夜景",seed:3},
+  dawnplane:{sky:"dawn",bld:"runway",range:"snow",rangeBase:130,rangeAmp:40,hills:false,plane:[90,60],label:"清晨航班",seed:5},
+  dunes:{sky:"day",range:"snow",rangeBase:100,rangeAmp:40,river:true,fg:"dunes",hills:false,label:"雪山下的沙丘",seed:11},
+  canyon:{sky:"day",peak:true,peakx:210,river:true,fg:"forest",hillBase:150,label:"峽谷與雪峰",seed:12},
+  namcha_dusk:{sky:"dusk",peak:true,peakx:200,goldpeak:true,bld:"village",hillBase:155,label:"南迦巴瓦日落",seed:13},
+  stars:{sky:"night",milky:true,peak:true,peakx:200,bld:"village",hillBase:155,label:"索松村星空",seed:14},
+  namcha_dawn:{sky:"gold",peak:true,peakx:190,goldpeak:true,fg:"forest",hillBase:150,label:"日照金山",seed:21},
+  wetland:{sky:"day",range:"snow",rangeBase:105,rangeAmp:36,water:"blue",waterY:140,fg:"reeds",hills:false,label:"濕地",seed:22},
+  pass:{sky:"day",range:"snow",rangeBase:120,rangeAmp:55,flags:58,fg:"grass",hillBase:160,label:"山口經幡",seed:23},
+  town:{sky:"dusk",range:"high",rangeBase:120,rangeAmp:40,bld:"village",hillBase:150,label:"林芝市區",seed:24},
+  newlake:{sky:"day",range:"snow",rangeBase:100,rangeAmp:38,water:"turq",waterY:128,fg:"forest",hillBase:136,hillCol:"#2f4f3d",label:"新措",seed:31},
+  jieba:{sky:"dusk",range:"snow",rangeBase:105,rangeAmp:36,bld:"village",water:"turq",waterY:155,hillBase:140,label:"結巴村",seed:32},
+  basum:{sky:"day",range:"snow",rangeBase:108,rangeAmp:40,water:"turq",waterY:126,island:true,fg:"forest",hillBase:134,hillCol:"#2f4f3d",label:"巴松措",seed:41},
+  road:{sky:"day",range:"snow",rangeBase:100,rangeAmp:45,road:true,flags:70,fg:"grass",hillBase:150,label:"往拉薩的公路",seed:42},
+  lhasa_eve:{sky:"dusk",bld:"palace",hills:false,label:"抵達拉薩",seed:43},
+  yamdrok:{sky:"day",range:"snow",rangeBase:96,rangeAmp:34,water:"turq",waterY:118,hillBase:126,hillAmp:20,hillCol:"#8a7a5c",flags:150,label:"羊卓雍措",seed:51},
+  glacier:{sky:"day",peak:true,peakx:170,peakTop:20,peakBase:132,glacier:true,fg:"grass",hillBase:160,label:"卡若拉冰川",seed:52},
+  reservoir:{sky:"day",range:"high",rangeBase:110,rangeAmp:30,water:"deep",waterY:130,fg:"grass",hillBase:136,hillCol:"#9c8a63",label:"滿拉水庫",seed:53},
+  shigatse:{sky:"dusk",range:"high",rangeBase:116,rangeAmp:34,bld:"village",hillBase:148,hillCol:"#8a7a5c",label:"日喀則",seed:54},
+  monastery:{sky:"day",range:"high",rangeBase:100,rangeAmp:30,bld:"monastery",hills:false,label:"扎什倫布寺",seed:61},
+  lhalu:{sky:"dusk",bld:"palace",water:"blue",waterY:158,fg:"reeds",hills:false,label:"拉魯濕地",seed:62},
+  park:{sky:"day",range:"high",rangeBase:110,rangeAmp:26,fg:"forest",bld:"village",hillBase:150,label:"羅布林卡",seed:63},
+  nagenla:{sky:"day",range:"snow",rangeBase:110,rangeAmp:50,flags:52,fg:"grass",hillBase:158,hillCol:"#9c8a63",label:"那根拉山口",seed:71},
+  namtso:{sky:"day",range:"snow",rangeBase:112,rangeAmp:34,water:"deep",waterY:118,fg:"grass",hillBase:150,hillAmp:10,hillCol:"#9c8a63",flags:146,label:"納木措",seed:72},
+  nye:{sky:"night",bld:"palace",hills:false,sun:true,sunx:270,label:"除夕夜",seed:73},
+  potala:{sky:"day",bld:"palace",hills:false,label:"布達拉宮",seed:81},
+  jokhang:{sky:"day",bld:"street",hills:false,range:"high",rangeBase:90,rangeAmp:26,label:"大昭寺與八廓街",seed:82},
+  potala_night:{sky:"night",bld:"palace",hills:false,label:"布宮夜景",seed:83},
+  depart:{sky:"day",range:"snow",rangeBase:120,rangeAmp:45,bld:"runway",hills:false,plane:[150,40],label:"拉薩貢嘎機場",seed:91},
+  chengdu:{sky:"night",bld:"city",hills:false,label:"成都",seed:92},
+  home:{sky:"day",bld:"runway",hills:false,plane:[120,55],label:"回港",seed:101}
+};
+const DAYS=[
+ {n:0,date:"12/24",wd:"四",title:"香港 → 北京",area:"北京",sleep:null,peak:null,sun:null,travel:true,hero:S.airport,
+  hotel:{name:"北京富永裕隆國際酒店",en:"Beijing Fuyong Yulong International Hotel",note:"國航免費中轉住宿",addr:"順義區天竺空港經濟開發區空港工業B區融慧園1號",tel:"+86 10 8049 1999"},
+  plan:[
+   {t:"15:30",b:"抵達香港機場 T1",p:"國際航班，起飛前 60 分鐘停止辦理登機。"},
+   {t:"17:50",b:"CA110 香港 T1 → 北京首都 T3",p:"Airbus A321neo，約 3 小時 25 分鐘，機上有餐。",img:S.dawnplane},
+   {t:"21:15",b:"抵達北京首都機場 T3",p:"辦入境、取行李，再找國航中轉住宿的接駁車。"},
+   {t:"22:30",b:"入住北京富永裕隆國際酒店",p:"國航中轉住宿。入住時問清楚明早去機場的接駁時間。",img:S.airport,key:true},
+   {t:"23:00",b:"盡快睡覺",p:"明早 05:15 要出發，只有約 6 小時。行李收好，證件放隨身袋。"}],
+  tips:["CA4127 是國內段，起飛前 40 分鐘停止辦理登機，最好 05:30 前到機場。","北京 12 月清晨約零下 8°C，出門已要穿厚衣。"]},
+ {n:1,date:"12/25",wd:"五",title:"抵達林芝 · 南迦巴瓦日落",area:"米林 → 索松村",sleep:2900,peak:3000,sun:["08:35","18:45"],hero:S.namcha_dusk,
+  hotel:{name:"季楓度假酒店",note:"景觀房 · 索松村"},
+  plan:[
+   {t:"05:15",b:"離開酒店去首都機場",p:"酒店早餐通常未開，帶些乾糧。"},
+   {t:"07:05",b:"CA4127 北京首都 → 林芝米林",p:"約 4 小時 10 分鐘。坐右邊窗口降落前有機會看到雪山。",img:S.dawnplane,key:true},
+   {t:"11:15",b:"抵達米林機場，司機接機",p:"海拔約 2,950m。下機慢慢走。"},
+   {t:"12:00",b:"午餐（自費）",p:"米林或派鎮一帶。"},
+   {t:"13:30",b:"佛掌沙丘",p:"雅魯藏布江邊的沙丘，背後就是雪山，雪山和沙漠同框。",img:S.dunes,key:true,alt:2950},
+   {t:"15:00",b:"雅魯藏布大峽谷",p:"景區要轉乘觀光車（門票及車費自費），沿江看峽谷和南迦巴瓦峰。",img:S.canyon,key:true},
+   {t:"17:00",b:"入住季楓度假酒店，索松村",p:"放下行李，加件衣服。"},
+   {t:"18:30",b:"南迦巴瓦日落",p:"天晴的話雪峰頂會被染成金紅色，日落約 18:45。",img:S.namcha_dusk,key:true,alt:2900},
+   {t:"20:30",b:"星空",p:"索松村光害少，晴天可看銀河。夜間約零下 4°C。",img:S.stars}],
+  tips:["第一天不要跑跳，晚上不要喝酒。","南迦巴瓦常被雲遮，看到要靠運氣，D2 早上還有一次機會。"]},
+ {n:2,date:"12/26",wd:"六",title:"日照金山 → 林芝",area:"索松村 → 林芝",sleep:2950,peak:4728,sun:["08:35","18:45"],hero:S.namcha_dawn,
+  hotel:{name:"林芝豪生酒店",note:"四鑽 · 林芝市區（八一）"},
+  plan:[
+   {t:"08:00",b:"南迦巴瓦日出",p:"等「日照金山」，晨光先照到峰頂，約 08:40 前後最好看。",img:S.namcha_dawn,key:true},
+   {t:"09:30",b:"早餐，退房",p:""},
+   {t:"11:30",b:"雅尼濕地公園",p:"尼洋河和雅魯藏布江交匯的濕地，冬季水色清。",img:S.wetland,key:true,alt:2920},
+   {t:"13:00",b:"午餐（自費）",p:"林芝市區。"},
+   {t:"14:30",b:"色季拉山口",p:"4,728m，首次上 4,000m 以上。天晴可以遠眺南迦巴瓦。拍照後就回車上。",img:S.pass,key:true,alt:4728},
+   {t:"16:30",b:"返回林芝市區，入住林芝豪生酒店",p:"",img:S.town},
+   {t:"晚上",b:"自由活動",p:"可試林芝石鍋雞。"}],
+  tips:["色季拉山口風大，帽子、手套放在隨手拿到的地方。","下山後如有頭痛，多喝水，早點休息。"]},
+ {n:3,date:"12/27",wd:"日",title:"新措輕徒步 · 結巴村",area:"林芝 → 新措 → 結巴村",sleep:3460,peak:3700,sun:["08:35","18:45"],hero:S.newlake,
+  hotel:{name:"巴松措湖畔風情客棧",note:"結巴村 · 客棧條件較簡單"},
+  plan:[
+   {t:"09:00",b:"早餐後出發",p:"林芝往巴松措方向，約 2.5 小時。"},
+   {t:"11:30",b:"新措輕徒步",p:"森林包圍的高山湖，約 1.5–2 小時輕鬆步行，冬天湖邊可能結冰。",img:S.newlake,key:true,alt:3700},
+   {t:"13:30",b:"午餐（自費）",p:""},
+   {t:"15:00",b:"抵達結巴村",p:"巴松措湖邊的工布藏族村落，石砌房子和經幡。",img:S.jieba,key:true,alt:3460},
+   {t:"16:00",b:"入住巴松措湖畔風情客棧",p:""},
+   {t:"17:30",b:"湖邊散步看日落",p:"日落約 18:45，之後氣溫會急降。"}],
+  tips:["徒步穿防滑鞋，帶水、暖包和少量零食。","客棧可能沒有供氧，海拔約 3,460m，睡前別洗太久熱水澡。"]},
+ {n:4,date:"12/28",wd:"一",title:"巴松措 → 拉薩",area:"結巴村 → 拉薩",sleep:3650,peak:4750,sun:["08:40","18:55"],hero:S.basum,
+  hotel:{name:"拉薩布達拉宮蘇路亞朵",note:"四星 · 供氧 · 連住 1 晚，D6 回來再住 3 晚"},
+  plan:[
+   {t:"08:30",b:"早餐",p:""},
+   {t:"09:30",b:"巴松措（錯高村）",p:"綠松石色的湖水，湖心島上有錯宗工布寺。",img:S.basum,key:true,alt:3470},
+   {t:"11:30",b:"出發往拉薩",p:"沿 G318 西行，全程約 5–6 小時。"},
+   {t:"13:30",b:"午餐（自費）",p:"工布江達一帶。"},
+   {t:"15:00",b:"翻越米拉山一帶",p:"約 4,750m，是今天最高點。",img:S.road,alt:4750},
+   {t:"17:30",b:"抵達拉薩，入住亞朵",p:"房間有供氧。今晚少走動，早點吃飯休息。",img:S.lhasa_eve,key:true}],
+  tips:["今天車程長，車上有氧氣，不舒服就用。","拉薩第一晚不要喝酒、不要洗頭。"]},
+ {n:5,date:"12/29",wd:"二",title:"羊湖 · 卡若拉冰川 → 日喀則",area:"拉薩 → 日喀則",sleep:3840,peak:5020,sun:["08:45","19:00"],hero:S.yamdrok,
+  hotel:{name:"日喀則熙客富景酒店",note:"四鑽 · 供氧"},
+  plan:[
+   {t:"08:30",b:"出發",p:"今天是最長車程之一，約 350km。"},
+   {t:"10:45",b:"崗巴拉山口俯瞰羊卓雍措",p:"約 4,990m。從山口往下看，羊湖像一條藍色的帶子。",img:S.yamdrok,key:true,alt:4990},
+   {t:"11:30",b:"羊湖湖邊",p:"可以下到湖邊拍照，風很大。"},
+   {t:"13:00",b:"午餐（自費）",p:"浪卡子縣。"},
+   {t:"14:30",b:"卡若拉冰川",p:"冰川就在路邊，約 5,020m，短停拍照就好，不要跑上冰面。",img:S.glacier,key:true,alt:5020},
+   {t:"16:00",b:"滿拉水庫",p:"江孜附近的高原水庫，冬季水色深藍。",img:S.reservoir,key:true},
+   {t:"18:30",b:"抵達日喀則，入住熙客富景",p:"房間有供氧。",img:S.shigatse}],
+  tips:["5,000m 一帶走路要慢、說話也少說，留力氣呼吸。","日喀則晚上可低至零下 14°C。"]},
+ {n:6,date:"12/30",wd:"三",title:"扎什倫布寺 → 拉薩",area:"日喀則 → 拉薩",sleep:3650,peak:3900,sun:["08:50","19:05"],hero:S.monastery,
+  hotel:{name:"拉薩布達拉宮蘇路亞朵",note:"四星 · 供氧 · 連住 3 晚"},
+  plan:[
+   {t:"09:30",b:"扎什倫布寺",p:"歷代班禪的駐錫寺，金頂和紅白殿堂沿山坡排開。參觀約 2 小時，順時針走。",img:S.monastery,key:true,alt:3840},
+   {t:"12:00",b:"午餐（自費）",p:"日喀則市區。"},
+   {t:"12:45",b:"出發回拉薩",p:"約 3.5–4 小時。"},
+   {t:"16:30",b:"拉魯濕地",p:"市區內的高原濕地，冬天有斑頭雁、赤麻鴨等候鳥，背後是布達拉宮。",img:S.lhalu,key:true,alt:3650},
+   {t:"17:30",b:"羅布林卡",p:"歷代達賴喇嘛的夏宮園林。冬季關門較早，到時視乎時間，可能和拉魯濕地對調。",img:S.park,key:true},
+   {t:"19:00",b:"返回亞朵",p:""}],
+  tips:["寺內很多殿堂禁止拍照，留意告示。","扎寺有台階，慢慢走。"]},
+ {n:7,date:"12/31",wd:"四",title:"那根拉山口 · 納木措",area:"拉薩 → 納木措 → 拉薩",sleep:3650,peak:5190,sun:["08:55","19:00"],hero:S.namtso,
+  hotel:{name:"拉薩布達拉宮蘇路亞朵",note:"四星 · 供氧"},
+  plan:[
+   {t:"07:30",b:"出發",p:"天未亮，車程約 3.5 小時。帶早餐上車。"},
+   {t:"10:30",b:"那根拉山口",p:"全程最高點約 5,190m，經幡和念青唐古拉山。只停幾分鐘。",img:S.nagenla,key:true,alt:5190},
+   {t:"11:15",b:"納木措（扎西半島）",p:"約 4,718m 的聖湖。冬天湖邊可能結冰，零下 20°C 加大風。",img:S.namtso,key:true,alt:4718},
+   {t:"13:30",b:"離開納木措",p:""},
+   {t:"14:30",b:"午餐（自費）",p:"當雄縣。"},
+   {t:"17:30",b:"回到拉薩",p:"不在當雄過夜，避開 4,200m 住宿。"},
+   {t:"晚上",b:"除夕夜",p:"今天很累，簡單吃一頓，早點休息。",img:S.nye}],
+  tips:["今天全程最冷最高：羽絨、帽、手套、頸巾全帶，便攜氧氣放身邊。","湖邊別跑，拍完照就回車上取暖。"]},
+ {n:8,date:"1/1",wd:"五",title:"拉薩自由活動",area:"拉薩市區",sleep:3650,peak:3700,sun:["08:55","19:00"],hero:S.potala,
+  hotel:{name:"拉薩布達拉宮蘇路亞朵",note:"四星 · 供氧"},
+  plan:[
+   {t:"09:00",b:"早餐",p:"今天不包車，自行搭的士或步行。"},
+   {t:"10:00",b:"布達拉宮",p:"按預約時段入場，帶證件。參觀約 1.5–2 小時，樓梯多，慢慢上。",img:S.potala,key:true,alt:3700},
+   {t:"12:30",b:"午餐（自費）",p:"可試甜茶館、藏麵。"},
+   {t:"14:00",b:"大昭寺",p:"拉薩最重要的寺院，門外總有磕長頭的信眾。",img:S.jokhang,key:true},
+   {t:"15:30",b:"八廓街轉經",p:"繞大昭寺一圈，順時針走，沿途是商店和甜茶館。"},
+   {t:"19:15",b:"布達拉宮夜景",p:"日落後亮燈，在布宮廣場或宗角祿康公園拍攝。",img:S.potala_night,key:true}],
+  tips:["布宮門票要提前實名預約，可請酒店或司機代約。","元旦人多，大昭寺排隊時間可能長。"]},
+ {n:9,date:"1/2",wd:"六",title:"拉薩 → 成都",area:"拉薩 → 成都",sleep:null,peak:3650,sun:null,hero:S.depart,
+  hotel:{name:"天府空港悅享酒店",en:"Joyhub Cheer Hotel",note:"2 間高級雙床房 · 14:00 後入住",addr:"成都雲悅路 2 號（天府機場附近）",tel:"+86 28 8690 7777"},
+  plan:[
+   {t:"07:45",b:"退房，司機送機",p:"拉薩市區到貢嘎機場約 1 小時。"},
+   {t:"08:45",b:"抵達拉薩貢嘎機場",p:""},
+   {t:"10:55",b:"CA2764 拉薩貢嘎 → 成都天府",p:"Airbus A319，約 2 小時 15 分鐘。",img:S.depart,key:true},
+   {t:"13:10",b:"抵達成都天府機場 T2",p:"取行李。"},
+   {t:"14:00",b:"入住天府空港悅享酒店",p:"回到低海拔，終於可以好好睡一覺。明早 09:20 的航班在 T1 出發。",img:S.chengdu,key:true}],
+  tips:["拉薩機場安檢嚴，隨身充電寶和液體按規定放好。","成都酒店 1 月 1 日起不可免費取消。"]},
+ {n:10,date:"1/3",wd:"日",title:"成都 → 香港",area:"成都",sleep:null,peak:null,sun:null,travel:true,hero:S.home,
+  hotel:null,
+  plan:[
+   {t:"07:00",b:"退房，前往天府機場 T1",p:"國際航班，起飛前 60 分鐘停止辦理登機，最好 07:30 前到櫃檯。"},
+   {t:"09:20",b:"CA411 成都天府 T1 → 香港 T1",p:"Airbus A321，約 2 小時 45 分鐘，有提供餐食。",img:S.home,key:true},
+   {t:"12:05",b:"抵達香港",p:"歡迎回家。"}],
+  tips:["注意是 T1 出發，和昨天抵達的 T2 不同。"]}
+];
+const TZ="+08:00";
+function todayKey(){const now=new Date();const hk=new Date(now.getTime()+(now.getTimezoneOffset()+480)*60000);return (hk.getMonth()+1)+"/"+hk.getDate()}
+const tk=todayKey();
+const fmt=v=>v.toLocaleString("en-US");
+
+/* ---------- Countdown ---------- */
+const ARRIVE=new Date("2026-12-25T11:15:00"+TZ), START=new Date("2026-12-24T00:00:00"+TZ), END=new Date("2027-01-04T00:00:00"+TZ);
+function tick(){
+  const now=new Date(), note=document.getElementById("count-note"), box=document.getElementById("count");
+  if(now<ARRIVE){
+    const ms=ARRIVE-now, d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
+    document.getElementById("cd-d").textContent=d;
+    document.getElementById("cd-h").textContent=String(h).padStart(2,"0");
+    document.getElementById("cd-m").textContent=String(m).padStart(2,"0");
+    note.textContent=now<START?"距離降落林芝（CA4127 · 12/25 11:15）":"已出發，CA4127 11:15 降落林芝";
+  }else if(now<END){
+    const t=DAYS.find(x=>x.date===tk);
+    box.innerHTML=`<div class="unit"><b>${t&&!t.travel?"D"+t.n:"—"}</b><span>今天</span></div>`;
+    note.innerHTML=t?`<a href="#day-${t.n}" style="color:inherit">${t.title} ›</a>`:"旅程進行中";
+  }else{box.innerHTML=`<div class="unit"><b>扎西德勒</b><span>旅程完成</span></div>`;note.textContent="";}
+}
+tick();setInterval(tick,30000);
+
+/* ---------- Home day list ---------- */
+const dl=document.getElementById("daylist");
+DAYS.forEach(x=>{
+  const hi=x.peak&&x.peak>=4500, a=document.createElement("a");
+  a.href="#day-"+x.n;a.className="dayrow"+(x.travel?" travel":"")+(x.date===tk?" today":"");
+  a.innerHTML=`<div class="thumb">${scene(x.hero)}</div>
+   <div class="drow-t"><span class="dn">${x.travel?"交通日":"D"+x.n} · ${x.date} 週${x.wd}</span><b>${x.title}${x.date===tk?'<span class="today-tag">今天</span>':""}</b><span>${x.area}</span></div>
+   ${x.peak?`<span class="altpill${hi?" hi":""}">${hi?"▲ ":""}${fmt(x.peak)}m</span>`:'<span class="chev">›</span>'}`;
+  dl.appendChild(a);
+});
+
+/* ---------- Altitude chart ---------- */
+(function(){
+  const svg=document.getElementById("altchart"), data=DAYS.filter(x=>x.n>=1&&x.n<=9);
+  const L=34,R=350,T=14,B=146,min=2500,max=5500,y=v=>B-(v-min)/(max-min)*(B-T),x=i=>L+i*(R-L)/(data.length-1);
+  let s="";
+  [3000,4000,5000].forEach(v=>{s+=`<line class="grid" x1="${L}" x2="${R}" y1="${y(v)}" y2="${y(v)}"/><text class="lab" x="0" y="${y(v)+3}">${v/1000}k</text>`});
+  data.forEach((p,i)=>{
+    s+=`<text class="lab" x="${x(i)}" y="164" text-anchor="middle">D${p.n}</text>`;
+    if(p.peak&&p.sleep&&p.peak>p.sleep)s+=`<line class="stem" x1="${x(i)}" x2="${x(i)}" y1="${y(p.peak)}" y2="${y(p.sleep)}"/>`;
+    if(p.peak){s+=`<circle class="peak" cx="${x(i)}" cy="${y(p.peak)}" r="3.5"/>`;if(p.peak>=5000)s+=`<text class="plab" x="${x(i)}" y="${y(p.peak)-7}" text-anchor="middle">${fmt(p.peak)}</text>`;}
+  });
+  s+=`<polyline class="sleep" points="${data.map((p,i)=>p.sleep?`${x(i)},${y(p.sleep)}`:"").filter(Boolean).join(" ")}"/>`;
+  data.forEach((p,i)=>{if(p.sleep)s+=`<circle class="sleepdot" cx="${x(i)}" cy="${y(p.sleep)}" r="3"/>`});
+  svg.innerHTML=s;
+})();
+
+/* ---------- Day page ---------- */
+function renderDay(n){
+  const x=DAYS.find(d=>d.n===n);if(!x)return false;
+  const i=DAYS.indexOf(x),prev=DAYS[i-1],next=DAYS[i+1];
+  document.getElementById("db-dots").innerHTML=DAYS.map(d=>`<a href="#day-${d.n}" class="${d.n===n?"on":""}" aria-label="${d.date} ${d.title}"></a>`).join("");
+  const nb=document.getElementById("db-next");
+  if(next){nb.href="#day-"+next.n;nb.removeAttribute("aria-disabled")}else{nb.href="#";nb.setAttribute("aria-disabled","true")}
+  const facts=[];
+  facts.push(`<div class="fact"><span>日期</span><b>${x.date} 週${x.wd}</b></div>`);
+  if(x.sleep)facts.push(`<div class="fact"><span>住宿海拔</span><b>≈${fmt(x.sleep)}m</b></div>`);
+  if(x.peak)facts.push(`<div class="fact"><span>當日最高點</span><b class="${x.peak>=4500?"robe":""}">≈${fmt(x.peak)}m</b></div>`);
+  if(x.sun)facts.push(`<div class="fact"><span>日出 / 日落（約）</span><b>${x.sun[0]} / ${x.sun[1]}</b></div>`);
+  const tl=x.plan.map(p=>`<div class="ti${p.key?" key":""}"><div class="tm">${p.t}</div><div class="rail"><i></i></div>
+     <div class="body"><b>${p.b}${p.alt?`<span class="altchip">${fmt(p.alt)}m</span>`:""}</b>${p.p?`<p>${p.p}</p>`:""}${p.img?`<div class="pic">${scene(p.img)}</div>`:""}</div></div>`).join("");
+  const h=x.hotel;
+  document.getElementById("daybody").innerHTML=`
+    <div class="dayhero">${scene(x.hero)}<div class="cap"><div class="dn">${x.travel?"交通日":"DAY "+x.n} · ${x.area}</div><h1>${x.title}</h1></div></div>
+    <div class="facts">${facts.join("")}</div>
+    <div class="panel"><h3>時間表</h3><div class="timeline">${tl}</div>
+      <p class="disclaim" style="margin:4px 0 0">時間為建議安排，實際以司機和路況為準。插圖為示意，並非實景照片。</p></div>
+    ${h?`<div class="panel hotelcard"><h3>今晚住宿</h3><div class="hn">${h.name}</div>${h.en?`<div class="small muted">${h.en}</div>`:""}<div class="small">${h.note}</div>${h.addr?`<div class="small muted">${h.addr}</div>`:""}${h.tel?`<div class="small">電話 <b style="font-family:var(--mono)" id="htel">${h.tel}</b> <button class="copy" data-copy="${h.tel.replace(/\s/g,"")}" data-sel="htel">複製</button></div>`:""}</div>`:""}
+    ${x.tips.length?`<div class="panel"><h3>當天提醒</h3><ul class="tiplist">${x.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>`:""}
+    <div class="pager">${prev?`<a href="#day-${prev.n}"><span>‹ 上一天</span><b>${prev.title}</b></a>`:""}${next?`<a class="next" href="#day-${next.n}"><span>下一天 ›</span><b>${next.title}</b></a>`:""}</div>`;
+  return true;
+}
+function route(){
+  const m=location.hash.match(/^#day-(\d+)$/);
+  const show=m&&renderDay(+m[1]);
+  document.getElementById("home").hidden=!!show;
+  document.getElementById("dayview").hidden=!show;
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);route();
+
+/* ---------- Checklist ---------- */
+const LIST=[
+ {g:"證件與付款",items:[
+  ["c-permit","檢查回鄉證有效期覆蓋 12/24 – 1/3","11月內"],
+  ["c-pay","付清餘款 CNY 16,320（每人 4,080）","12/17 前"],
+  
+  ["c-transit","向國航 / 富永裕隆酒店確認 12/25 清晨去首都機場的接駁時間",""],
+  ["c-cdcard","成都酒店 12/30 自動扣款，確認信用卡可用",""],
+  ["c-potala","預約布達拉宮門票（D8 · 1/1），問司機或酒店代約","12月初"],
+  ["c-border","向司機確認行程有沒有路段需要邊防證",""],
+  ["c-wechat","加入領隊微信群","12/23"],
+  ["c-pay2","設定微信支付 / 支付寶，帶少量人民幣現金",""]]},
+ {g:"健康",items:[
+  ["c-doctor","看醫生或旅遊診所，問高原反應藥（Diamox）","11月內"],
+  ["c-meds","個人藥物：頭痛、腸胃、感冒、喉糖",""],
+  ["c-cold","出發前一週避免感冒；有病徵先問醫生是否適合出發",""]]},
+ {g:"衣物",items:[
+  ["c-down","長羽絨（可抵 -20°C）",""],["c-base","保暖內衣褲 2–3 套、抓絨中層",""],
+  ["c-acc","手套、毛帽、頸巾、厚襪",""],["c-shoe","防滑保暖鞋（新措要走路）",""],["c-heat","暖包（貼式 + 手握）",""]]},
+ {g:"防曬與護理",items:[["c-sun","UV400 太陽眼鏡",""],["c-spf","SPF50 防曬、潤唇膏、厚保濕霜",""],["c-nose","保濕噴霧 / 鼻腔保濕（拉薩很乾）",""]]},
+ {g:"電子與貴重物品",items:[["c-batt","相機後備電池（低溫耗電快），貼身保暖",""],["c-power","充電寶（符合航空規定）",""],["c-map","下載離線地圖；部分路段沒有訊號",""],["c-ins","保險單號及援助熱線存在手機及紙本",""]]},
+ {g:"行李",items:[["c-bag","每人一個 26 寸以內行李箱",""],["c-day","小背包：水、零食、氧氣瓶、證件",""]]}
+];
+const KEY="tibet26-checks";
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return{}}}
+function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+const state=load(),listEl=document.getElementById("checklist");
+LIST.forEach(grp=>{const p=document.createElement("div");p.className="panel group";
+  p.innerHTML=`<h3>${grp.g}</h3>`+grp.items.map(([id,txt,due])=>`<div class="check${state[id]?" done":""}"><input type="checkbox" id="${id}" ${state[id]?"checked":""}><label for="${id}">${txt}</label>${due?`<span class="due">${due}</span>`:""}</div>`).join("");
+  listEl.appendChild(p);});
+function prog(){const all=listEl.querySelectorAll("input"),n=[...all].filter(i=>i.checked).length;document.getElementById("prog-txt").textContent=`${n} / ${all.length}`;document.getElementById("prog-bar").style.width=(all.length?n/all.length*100:0)+"%";}
+listEl.addEventListener("change",e=>{if(e.target.type!=="checkbox")return;state[e.target.id]=e.target.checked;e.target.closest(".check").classList.toggle("done",e.target.checked);save(state);prog();});
+prog();
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t===b));
+  document.querySelectorAll("[role=tabpanel]").forEach(p=>p.hidden=p.id!==b.dataset.panel);
+}));
+
+/* ---------- Copy ---------- */
+document.addEventListener("click",e=>{const b=e.target.closest(".copy");if(!b)return;
+  const done=()=>{b.textContent="已複製";setTimeout(()=>b.textContent="複製",1500)};
+  const fallback=()=>{const el=document.getElementById(b.dataset.sel);if(!el)return;const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)};
+  if(navigator.clipboard)navigator.clipboard.writeText(b.dataset.copy).then(done).catch(fallback);else fallback();
+});
+</script>
+
+</body>
+</html>
